@@ -1,0 +1,27 @@
+language: node_js
+node_js:
+  - 13
+
+env:
+  - secure: "YW0JzndGrRn7+MJkWbKR4UeiuYWTbBl9r+2B4NcqqjbJ3LVBrCrToYbevADxwvACddcROuSxEL6J9jHHgiQHxau97DQEkDDnasJ/GWdb3tAyLii9MmwiwZqiyasEbAQsm7yaSVUTKu3GP0HJHedKlhfZ/dVVupNf0yE2JitvQtZO9kaHyfjsYXsS/xHEazTcfcfV4EtF2I2/AKEIYZEpnW8omC0GIJjOZhax0dwQMwehRr+zwQJydvFZYSQX7lFwhuxJOMCpJEIytkjTXtj36+T9TmHjxq8CEnUlh4sjbOPh9bbmpUi9r9AQ1Tk70ZatBuXyvJAYW0sEpu1jU/DFVJPZSBFF1PH4CA4sqUJ76ZCrbskAtofD1L9jwDUBLE1RuazrcIy/D7Ra3HQJRRSGXjVMeeW6aaShkQQpKkAe3Y9I2bhAkdMVm+riGJpB83evj1BGOIgaKI+k/ZQ+vd0/FazBb/u3BFzL7Hh66zw/3Sl9l/SqJ/WPbRWxVYlI3zm8wje9iABXZtDDvYxo3/qlGXr6BoPhKS1NbJP/U2YqreY1gNFO+YOCkVZh5vgSbYrr6iny3Cws5rZkrmZqr95Y5iL25BY5HPyMq9pg7AknurAbWS7Boo9zn7XoO+cHiF2va55C0T+qIn6IO1HVJA+eXTnBrAHQK7z9smNJIrlUcnM="
+  - secure: "ANgTKQWJP/yrDGnV2tezCEB61trgIoPIOs3y/4JyeuzDkd9mziqbb1msA61byjIKI2wW3hZpsLkhZsCGGSE3mpwbWbMPX1QAiyGq+V4OK7KU7oOdCP2SeENM8qQmfoULB0n8wWvPCrlnG1NQDTL5foxMHMVScwPus54ousX2/9B+9bKb5yRygjLVN59fOGWW2Z7+BGDawfOClcsUWGH0OHDNcJNMtjBpEcd3n0S1HQturJDeOsAMkVYTSqHCrw2evDRLNBrX56QsaJ8ZGMnn1SAjHxl0IkPwLLkmpgHbXtQw/L7JjSvktPYxfCoJ0zVJmUwD0NjIwesEEdXTri0pubSv6jvxb9Cfv8ZS/JxSh4x9xHqIAcTp7EN4rCBoac8udit1VpRBrfE2qqyu5Gra0RtDHZUsraZsYLcA0TDNhIiznT7KMRn2uz4DRU2clZbJu2790Humi3UvrrGChGRsMEsH/fEen+K8F8QJQIqgUeJF6IkKheKLFvLbGSz/BkjHXGqYfNU5E4YkmNxBo2sm8sIULOZrrTc2wagHxzIJbns839S2s1vvfWGxkBBZN8P5q0ojo6mqpVIeChcOO4VmCZNt99+Ux1TY4k2L1HQinMYLKv1TQZ6kOHykuRERmNBoQFGZYTmFf14tP8rdpD1OvDsPuYlBB7+fLH539yy9qQg="
+
+services:
+  - docker
+
+# Pre-testing installs
+install:
+  - echo "nothing needs to be installed"
+
+# Scripts to be run such as tests
+before_script:
+  - echo "no tests"
+
+script:
+  - docker --version # print the version for logging
+  - docker build -t simple-node .
+  - docker tag simple-node rpandey89/travistest:latest
+
+after_success:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push YOUR_DOCKER_HUB/simple-node
